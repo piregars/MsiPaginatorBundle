@@ -1,0 +1,7 @@
+<div class="pagination pull-right">
+    <ul>
+        {% for page in pagination %}
+            <li{% if page.class is defined %} class="active"{% endif %}><a href="{{ page.path }}">{{ page.label }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

@@ -126,42 +126,42 @@ class Paginator
 
         if ($numPages < 2) return;
 
-        $dada = array();
+        $pagination = array();
         // previous
         if ($this->page != 1) {
-            $dada[] = array('path' => $this->genUrl($this->page - 1), 'label' => 'Prev');
+            $pagination[] = array('path' => $this->genUrl($this->page - 1), 'label' => 'Prev');
         } else {
-            $dada[] = array('class' => 'disabled', 'path' => $this->genUrl(1), 'label' => 'Prev');
+            $pagination[] = array('class' => 'disabled', 'path' => $this->genUrl(1), 'label' => 'Prev');
         }
         // first
         if ($this->page > 4) {
-            $dada[] = array('path' => $this->genUrl(1), 'label' => 1);
-            $dada[] = array('class' => 'disabled', 'label' => '...', 'path' => '#');
+            $pagination[] = array('path' => $this->genUrl(1), 'label' => 1);
+            $pagination[] = array('class' => 'disabled', 'label' => '...', 'path' => '#');
         }
         // middle
         if ($numPages > 1) {
             for ($i=$this->page - 4; $i < $this->page - 4 + 7; $i++) {
                 if ($i + 1 == $this->page) {
-                    $dada[] = array('class' => 'active', 'path' => $this->genUrl($i + 1), 'label' => $i + 1);
+                    $pagination[] = array('class' => 'active', 'path' => $this->genUrl($i + 1), 'label' => $i + 1);
                 } else if ($i >= 0 && $i <= $numPages - 1) {
-                    $dada[] = array('path' => $this->genUrl($i + 1), 'label' => $i + 1);
+                    $pagination[] = array('path' => $this->genUrl($i + 1), 'label' => $i + 1);
                 }
             }
         }
         // last
         if ($this->page < $numPages - 3) {
-            $dada[] = array('class' => 'disabled', 'label' => '...', 'path' => '#');
-            $dada[] = array('path' => $this->genUrl($numPages), 'label' => $numPages);
+            $pagination[] = array('class' => 'disabled', 'label' => '...', 'path' => '#');
+            $pagination[] = array('path' => $this->genUrl($numPages), 'label' => $numPages);
         }
         // next
         if ($this->page != $numPages) {
-            $dada[] = array('path' => $this->genUrl($this->page + 1), 'label' => 'Next');
+            $pagination[] = array('path' => $this->genUrl($this->page + 1), 'label' => 'Next');
         } else {
-            $dada[] = array('class' => 'disabled', 'path' => $this->genUrl($numPages), 'label' => 'Next');
+            $pagination[] = array('class' => 'disabled', 'path' => $this->genUrl($numPages), 'label' => 'Next');
         }
 
         if ($this->page > $numPages) return;
 
-        return $this->templating->render('MsiAdminBundle:Core:pagination.html.twig', array('dada' => $dada));
+        return $this->templating->render('MsiPaginatorBundle::pagination.html.twig', array('pagination' => $pagination));
     }
 }

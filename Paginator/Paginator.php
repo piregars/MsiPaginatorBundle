@@ -7,19 +7,21 @@ use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Paginator
 {
-    private $page;
-    private $limit;
-    private $length;
-    private $parameters;
-    private $data;
-    private $result;
+    public $query;
 
-    private $router;
-    private $templating;
-    private $request;
+    protected $page;
+    protected $limit;
+    protected $length;
+    protected $data;
+    protected $result;
+
+    protected $router;
+    protected $templating;
+    protected $request;
 
     public function __construct(EngineInterface $templating, RouterInterface $router, Request $request)
     {
@@ -27,7 +29,7 @@ class Paginator
         $this->limit = 10;
         $this->data = null;
         $this->result = null;
-        $this->parameters = array();
+        $this->query = new ParameterBag();
 
         $this->router = $router;
         $this->templating = $templating;
@@ -36,7 +38,7 @@ class Paginator
 
     public function genUrl($page)
     {
-        $parameters = array_merge($this->parameters, array('page' => $page));
+        $parameters = array_merge($this->query->all(), array('page' => $page));
 
         return $this->router->generate($this->request->attributes->get('_route'), $parameters);
     }
@@ -111,13 +113,6 @@ class Paginator
     public function getLength()
     {
         return $this->length;
-    }
-
-    public function setParameters($parameters)
-    {
-        $this->parameters = $parameters;
-
-        return $this;
     }
 
     public function render()

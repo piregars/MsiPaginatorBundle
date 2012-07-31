@@ -71,7 +71,7 @@ class Paginator
                 $this->data->setFirstResult($offset);
                 $this->data->setMaxResults($this->limit);
 
-                $this->result = new ArrayCollection($this->data->getQuery()->getResult());
+                $this->result = new ArrayCollection($this->data->getQuery()->execute());
             }
         }
 

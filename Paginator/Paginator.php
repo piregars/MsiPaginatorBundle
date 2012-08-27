@@ -7,12 +7,9 @@ use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Paginator
 {
-    public $query;
-
     protected $page;
     protected $limit;
     protected $length;
@@ -29,16 +26,22 @@ class Paginator
         $this->limit = 10;
         $this->data = null;
         $this->result = null;
-        $this->query = new ParameterBag();
 
         $this->router = $router;
         $this->templating = $templating;
         $this->request = $request;
     }
 
+    public function paginate($data, $page, $limit)
+    {
+        $this->setLimit($limit);
+        $this->setPage($page);
+        $this->setData($data);
+    }
+
     public function genUrl($page)
     {
-        $parameters = array_merge($this->query->all(), array('page' => $page));
+        $parameters = array_merge($this->request->query->all(), array('page' => $page));
 
         return $this->router->generate($this->request->attributes->get('_route'), $parameters);
     }

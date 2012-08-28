@@ -1,0 +1,9 @@
+{% set paginator_attr = paginator.options.attr|merge({'class': (paginator.options.attr.class|default('')~' btn-toolbar')|trim}) %}
+<div{% for attrname, attrvalue in paginator_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+    <div class="btn-group">
+        {% for item in pagination %}
+            {% set item_attr = item.attr|merge({'class': (item.attr.class|default('')~' btn')|trim}) %}
+            <a{% for attrname, attrvalue in item_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %} href="{{ item.url }}">{{ item.label }}</a>
+        {% endfor %}
+    </div>
+</div>

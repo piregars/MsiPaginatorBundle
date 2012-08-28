@@ -1,0 +1,9 @@
+{% set paginator_attr = paginator.options.attr %}
+<div{% for attrname, attrvalue in paginator_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+    <ul>
+        {% for item in pagination %}
+            {% set item_attr = item.attr %}
+            <li{% for attrname, attrvalue in item_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}><a href="{{ item.url }}">{{ item.label }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

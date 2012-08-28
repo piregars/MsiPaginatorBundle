@@ -35,6 +35,7 @@ class PaginatorExtension extends \Twig_Extension
     public function renderPaginator($paginator)
     {
         $numPages = $paginator->countPages();
+        $options = $paginator->getOptions();
 
         if ($numPages < 2) return;
 
@@ -74,7 +75,7 @@ class PaginatorExtension extends \Twig_Extension
 
         if ($paginator->getPage() > $numPages) return;
 
-        return $this->environment->render('MsiPaginatorBundle::pagination.html.twig', array('paginator' => $paginator, 'pagination' => $pagination));
+        return $this->environment->render('MsiPaginatorBundle:Pagination:'.$options['template'].'.html.twig', array('paginator' => $paginator, 'pagination' => $pagination));
     }
 
     protected function generateUrl($page)

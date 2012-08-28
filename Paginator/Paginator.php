@@ -2,11 +2,8 @@
 
 namespace Msi\Bundle\PaginatorBundle\Paginator;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -148,7 +145,8 @@ class Paginator
     protected function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'attr' => array('class' => 'pagination pull-right'),
+            'attr' => array(),
+            'template' => 'bootstrap_default',
         ));
     }
 }

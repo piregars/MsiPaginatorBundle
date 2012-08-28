@@ -1,7 +1,7 @@
-<div class="pagination pull-right">
+<div{% for attrname, attrvalue in paginator.options.attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
     <ul>
         {% for page in pagination %}
-            <li{% if page.class is defined %} class="active"{% endif %}><a href="{{ page.path }}">{{ page.label }}</a></li>
+            <li{% for attrname, attrvalue in page.attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}><a href="{{ page.url }}">{{ page.label }}</a></li>
         {% endfor %}
     </ul>
 </div>

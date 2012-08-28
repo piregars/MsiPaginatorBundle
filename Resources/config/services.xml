@@ -10,10 +10,11 @@
     </parameters>
     -->
     <services>
-        <service id="msi_paginator.paginator.factory" class="Msi\Bundle\PaginatorBundle\Paginator\PaginatorFactory" scope="request">
-            <argument type="service" id="templating" />
-            <argument type="service" id="router" />
-            <argument type="service" id="request" />
+        <service id="msi_paginator.paginator.factory" class="Msi\Bundle\PaginatorBundle\Paginator\PaginatorFactory" scope="request" />
+
+        <service id="msi_paginator.paginator.twig.extension" class="Msi\Bundle\PaginatorBundle\Twig\Extension\PaginatorExtension" public="false">
+            <argument type="service" id="service_container" />
+            <tag name="twig.extension" />
         </service>
     </services>
 </container>

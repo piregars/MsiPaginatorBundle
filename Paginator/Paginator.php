@@ -8,28 +8,33 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Collection;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 class Paginator
 {
+    protected $options;
+
     protected $page;
+
     protected $limit;
+
     protected $length;
+
     protected $data;
+
     protected $result;
 
-    protected $router;
-    protected $templating;
-    protected $request;
-
-    public function __construct(EngineInterface $templating, RouterInterface $router, Request $request)
+    public function __construct(array $options = array())
     {
         $this->page = 1;
         $this->limit = 10;
         $this->data = null;
         $this->result = null;
 
-        $this->router = $router;
-        $this->templating = $templating;
-        $this->request = $request;
+        $resolver = new OptionsResolver();
+        $this->setDefaultOptions($resolver);
+        $this->options = $resolver->resolve($options);
     }
 
     public function paginate($data, $page, $limit)
@@ -37,13 +42,6 @@ class Paginator
         $this->setLimit($limit);
         $this->setPage($page);
         $this->setData($data);
-    }
-
-    public function genUrl($page)
-    {
-        $parameters = array_merge($this->request->query->all(), array('page' => $page));
-
-        return $this->router->generate($this->request->attributes->get('_route'), $parameters);
     }
 
     public function countPages()
@@ -58,10 +56,12 @@ class Paginator
 
     public function getTo()
     {
-        if ($this->page == $this->countPages())
+        if ($this->page == $this->countPages()) {
             return $this->length;
-        else
+        }
+        else {
             return $this->limit * $this->page;
+        }
     }
 
     public function getResult()
@@ -83,11 +83,9 @@ class Paginator
         return $this->result;
     }
 
-    public function setLimit($limit)
+    public function getData()
     {
-        $this->limit = $limit;
-
-        return $this;
+        return $this->data;
     }
 
     public function setData($data)
@@ -106,6 +104,28 @@ class Paginator
         return $this;
     }
 
+    public function getLimit()
+    {
+        return $this->limit;
+    }
+
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function getPage()
+    {
+        return $this->page;
+    }
+
     public function setPage($page)
     {
         $this->page = $page;
@@ -118,48 +138,17 @@ class Paginator
         return $this->length;
     }
 
-    public function render()
+    public function setLength($length)
     {
-        $numPages = $this->countPages();
+        $this->length = $length;
 
-        if ($numPages < 2) return;
+        return $this;
+    }
 
-        $pagination = array();
-        // previous
-        if ($this->page != 1) {
-            $pagination[] = array('path' => $this->genUrl($this->page - 1), 'label' => 'Prev');
-        } else {
-            $pagination[] = array('class' => 'disabled', 'path' => $this->genUrl(1), 'label' => 'Prev');
-        }
-        // first
-        if ($this->page > 4) {
-            $pagination[] = array('path' => $this->genUrl(1), 'label' => 1);
-            $pagination[] = array('class' => 'disabled', 'label' => '...', 'path' => '#');
-        }
-        // middle
-        if ($numPages > 1) {
-            for ($i=$this->page - 4; $i < $this->page - 4 + 7; $i++) {
-                if ($i + 1 == $this->page) {
-                    $pagination[] = array('class' => 'active', 'path' => $this->genUrl($i + 1), 'label' => $i + 1);
-                } else if ($i >= 0 && $i <= $numPages - 1) {
-                    $pagination[] = array('path' => $this->genUrl($i + 1), 'label' => $i + 1);
-                }
-            }
-        }
-        // last
-        if ($this->page < $numPages - 3) {
-            $pagination[] = array('class' => 'disabled', 'label' => '...', 'path' => '#');
-            $pagination[] = array('path' => $this->genUrl($numPages), 'label' => $numPages);
-        }
-        // next
-        if ($this->page != $numPages) {
-            $pagination[] = array('path' => $this->genUrl($this->page + 1), 'label' => 'Next');
-        } else {
-            $pagination[] = array('class' => 'disabled', 'path' => $this->genUrl($numPages), 'label' => 'Next');
-        }
-
-        if ($this->page > $numPages) return;
-
-        return $this->templating->render('MsiPaginatorBundle::pagination.html.twig', array('pagination' => $pagination));
+    protected function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'attr' => array('class' => 'pagination pull-right'),
+        ));
     }
 }

@@ -8,9 +8,6 @@
             "email": "alexisjoubert@groupemsi.com"
         }
     ],
-    "require": {
-        "symfony/framework-bundle": "2.1.*"
-    },
     "autoload": {
         "psr-0": { "Msi\\Bundle\\PaginatorBundle": "" }
     },

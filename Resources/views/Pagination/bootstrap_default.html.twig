@@ -3,7 +3,7 @@
     <ul>
         {% for item in pagination %}
             {% set item_attr = item.attr %}
-            <li{% for attrname, attrvalue in item_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}><a href="{{ item.url }}">{{ item.label }}</a></li>
+            <li{% for attrname, attrvalue in item_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}><a href="{{ item.url }}">{{ item.label|raw }}</a></li>
         {% endfor %}
     </ul>
 </div>

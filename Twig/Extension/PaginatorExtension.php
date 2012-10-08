@@ -42,9 +42,9 @@ class PaginatorExtension extends \Twig_Extension
         $pagination = array();
         // previous
         if ($paginator->getPage() != 1) {
-            $pagination[] = array('attr' => array(), 'url' => $this->generateUrl($paginator->getPage() - 1), 'label' => '&laquo;');
+            $pagination[] = array('attr' => array(), 'url' => $this->generateUrl($paginator->getPage() - 1), 'label' => '«');
         } else {
-            $pagination[] = array('attr' => array('class' => 'disabled'), 'url' => $this->generateUrl(1), 'label' => '&laquo;');
+            $pagination[] = array('attr' => array('class' => 'disabled'), 'url' => $this->generateUrl(1), 'label' => '«');
         }
         // first
         if ($paginator->getPage() > 4) {
@@ -68,9 +68,9 @@ class PaginatorExtension extends \Twig_Extension
         }
         // next
         if ($paginator->getPage() != $numPages) {
-            $pagination[] = array('attr' => array(), 'url' => $this->generateUrl($paginator->getPage() + 1), 'label' => '&raquo;');
+            $pagination[] = array('attr' => array(), 'url' => $this->generateUrl($paginator->getPage() + 1), 'label' => '»');
         } else {
-            $pagination[] = array('attr' => array('class' => 'disabled'), 'url' => $this->generateUrl($numPages), 'label' => '&raquo;');
+            $pagination[] = array('attr' => array('class' => 'disabled'), 'url' => $this->generateUrl($numPages), 'label' => '»');
         }
 
         if ($paginator->getPage() > $numPages) return;
